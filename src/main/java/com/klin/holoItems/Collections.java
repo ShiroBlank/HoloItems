@@ -88,6 +88,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class Collections implements CommandExecutor, Listener, TabCompleter {
@@ -318,6 +319,23 @@ public class Collections implements CommandExecutor, Listener, TabCompleter {
                 player.getInventory().addItem(item.item);
                 player.sendMessage(Utility.formatName(item.name) + " acquired");
                 return true;
+
+            case "giveholo":
+                if(!player.hasPermission("holoItems.op")){
+                    return false;
+                }
+                Item giveItem = items.get(args[1]);
+                Logger logger = Bukkit.getLogger();
+                if (giveItem == null || giveItem.cost==-1){
+                    logger.info("Item " + args[1] + " was not found!");
+                    return true;
+                }
+                Player target = Bukkit.getPlayer(args[0]);
+                if(target == null){
+                    logger.info("Player " + args[0] +" couldn't be found!");
+                    return true;
+                }
+                player.getInventory().addItem(giveItem.item);
 
             //holoItems.op
 
